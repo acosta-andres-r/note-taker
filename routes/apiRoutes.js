@@ -1,7 +1,5 @@
 // ===============================================================================
 // DEPENDENCIES
-// We need to include the fs package to store and retrieve notes from .json file.
-// We need to include the path package to get the correct file path for our html.
 // ===============================================================================
 var fs = require("fs");
 var path = require("path");
@@ -10,6 +8,19 @@ const util = require("util");
 // The built-in util package can be used to create Promise-based versions of functions using node style callbacks
 const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
+
+// ===============================================================================
+// FUNCTIONS:
+// ===============================================================================
+
+async function readDBjson() {
+    const dbJsonStr = await readFileAsync(path.join(__dirname, "../db/db.json"), "utf8")
+    return JSON.parse(dbJsonStr)
+}
+
+function writeDBjson(data) {
+    return writeFileAsync(path.join(__dirname, "../db/db.json"),JSON.stringify(data))
+}
 
 // ===============================================================================
 // ROUTING
@@ -22,15 +33,26 @@ module.exports = function (app) {
     // In each of the below cases when a user visits a link
     // ---------------------------------------------------------------------------
 
-    app.get("/api/notes", function (req, res) {
+    app.get("/api/notes", async function (req, res) {
+        // Send result - the parsed JSON string to an object.
+        res.json(await readDBjson());
+    });
 
-        console.log('entered');
-        readFileAsync(path.join(__dirname, "../db/db.json"), "utf8")
-            .then(function (data) {
-                console.log(data);
-                // Parse the JSON string to an object to send result
-                res.json(JSON.parse(data));
-            });
+    // API POST Requests
+    // Below code handles when a user submits a form and thus submits data to the server.
+    // ---------------------------------------------------------------------------
+
+    app.post("/api/notes", async function (req, res) {
+        // req.body is available since we're using the body parsing middleware
+
+        const userRequest = req.body;
+        let databaseArray = await readDBjson();
+
+        databaseArray.push(userRequest);
+
+        await writeDBjson(databaseArray)
+        
+        res.json(userRequest);
     });
 
 };
