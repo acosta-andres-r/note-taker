@@ -19,7 +19,7 @@ async function readDBjson() {
 }
 
 function writeDBjson(data) {
-    return writeFileAsync(path.join(__dirname, "../db/db.json"),JSON.stringify(data))
+    return writeFileAsync(path.join(__dirname, "../db/db.json"), JSON.stringify(data, null, 2))
 }
 
 // ===============================================================================
@@ -29,8 +29,6 @@ function writeDBjson(data) {
 module.exports = function (app) {
 
     // API GET Requests
-    // Below code handles when users "visit" a page.
-    // In each of the below cases when a user visits a link
     // ---------------------------------------------------------------------------
 
     app.get("/api/notes", async function (req, res) {
@@ -39,20 +37,48 @@ module.exports = function (app) {
     });
 
     // API POST Requests
-    // Below code handles when a user submits a form and thus submits data to the server.
     // ---------------------------------------------------------------------------
 
     app.post("/api/notes", async function (req, res) {
-        // req.body is available since we're using the body parsing middleware
-
-        const userRequest = req.body;
+        const newNote = req.body;
+        // Read data and return parsed object
         let databaseArray = await readDBjson();
+        // Find id to attach to new note
+        newNote.id = databaseArray.length + 1;
+        // New note added to db
+        databaseArray.push(newNote);
+        // Write a new db.json
+        await writeDBjson(databaseArray);
+        // response with JSON object of new note
+        res.json(newNote);
+    });
 
-        databaseArray.push(userRequest);
-
-        await writeDBjson(databaseArray)
+    // API DELETE Requests
+    // ---------------------------------------------------------------------------
+    app.delete("/api/notes/:id", async function (req, res) {
         
-        res.json(userRequest);
+        // Chosen index element (if id is zero, true if statement in index.js will skip )
+        var chosen = req.params.id - 1;
+        // Read data and return parsed object
+        const currentDBarray = await readDBjson();
+
+        let noteID = 0;
+        // Remove chosen note and assign new id to remaining notes
+        const removedDBarray = currentDBarray.filter((note, i) => {
+            if (i === chosen) {
+                return false
+            } else {
+                note.id = noteID + 1;
+                noteID += 1;
+
+                return true
+            }
+        })
+        // Write a new db.json
+        await writeDBjson(removedDBarray);
+        // response back to html to let it know that process has finished
+        res.json(true)
+
     });
 
 };
