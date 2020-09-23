@@ -6,7 +6,7 @@
 </div>
   
 ### Description
-With this application, you can organize your thoughts and keep track of your tasks by writing, saving, or deleting notes.
+With this application, you can organize your thoughts and keep track of your tasks by writing, saving, or deleting notes as needed.
 
 ### Table of Contents
 
@@ -18,7 +18,7 @@ With this application, you can organize your thoughts and keep track of your tas
   * [Questions](#questions)
 
 ### Installation
-This app is completely deployed using Heroku [here](https://stark-mountain-02801.herokuapp.com/)
+This app is completely deployed using Heroku: [Link here](https://stark-mountain-02801.herokuapp.com/)
 
 ### Usage
 Demo
