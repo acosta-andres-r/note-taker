@@ -35,6 +35,7 @@ Save note:
 ![](icons/save.png)
 
 Demo
+
 ![](demo/Note-taker.gif)
 
 ### License
