@@ -1,6 +1,7 @@
 const $noteTitle = $(".note-title");
 const $noteText = $(".note-textarea");
 const $saveNoteBtn = $(".save-note");
+const $editNoteBtn = $(".edit-note")
 const $newNoteBtn = $(".new-note");
 const $noteList = $(".list-container .list-group");
 
@@ -35,17 +36,23 @@ const deleteNote = (id) => {
 // If there is an activeNote, display it, otherwise render empty inputs
 const renderActiveNote = () => {
   $saveNoteBtn.hide();
+  $editNoteBtn.hide();
 
   if (activeNote.id) {
+    $editNoteBtn.show();
     $noteTitle.attr("readonly", true);
     $noteText.attr("readonly", true);
     $noteTitle.val(activeNote.title);
     $noteText.val(activeNote.text);
+    // Add ID to title to edit and save existing note
+    $noteTitle.attr("data-id", activeNote.id);
   } else {
     $noteTitle.attr("readonly", false);
     $noteText.attr("readonly", false);
     $noteTitle.val("");
     $noteText.val("");
+    // Remove data-id attribute from Title field
+    $noteTitle.removeAttr("data-id");
   }
 };
 
@@ -54,13 +61,22 @@ const handleNoteSave = function () {
   const newNote = {
     title: $noteTitle.val(),
     text: $noteText.val(),
+    id: $noteTitle.attr("data-id") || 0
   };
 
-  saveNote(newNote).then(() => {
+  saveNote(newNote).then((savedNote) => {
+    activeNote = savedNote;
     getAndRenderNotes();
     renderActiveNote();
   });
 };
+
+// EDIT saved notes
+const handleNoteEdit = function () {
+  $saveNoteBtn.show()
+  $noteTitle.attr("readonly", false);
+  $noteText.attr("readonly", false);
+}
 
 // Delete the clicked note
 const handleNoteDelete = function (event) {
@@ -94,10 +110,17 @@ const handleNewNoteView = function () {
 // If a note's title or text are empty, hide the save button
 // Or else show it
 const handleRenderSaveBtn = function () {
+
   if (!$noteTitle.val().trim() || !$noteText.val().trim()) {
     $saveNoteBtn.hide();
+    // Hide edit btn if nothind is in both text fields
+    $editNoteBtn.hide();
+
   } else {
-    $saveNoteBtn.show();
+    // Prevent show save btn in read only mode
+    if (!$noteTitle.attr("readonly") || !$noteText.attr("readonly")) {
+      $saveNoteBtn.show();
+    }
   }
 };
 
@@ -141,6 +164,7 @@ const getAndRenderNotes = () => {
 };
 
 $saveNoteBtn.on("click", handleNoteSave);
+$editNoteBtn.on("click", handleNoteEdit); // Edit saved notes
 $noteList.on("click", ".list-group-item", handleNoteView);
 $newNoteBtn.on("click", handleNewNoteView);
 $noteList.on("click", ".delete-note", handleNoteDelete);
