@@ -18,10 +18,21 @@ With this application, you can organize your thoughts and keep track of your tas
   * [Questions](#questions)
 
 ### Installation
-This app is completely deployed using Heroku: [Link here](https://stark-mountain-02801.herokuapp.com/)
+This app is completely deployed using Heroku: [Deployed Link](https://stark-mountain-02801.herokuapp.com/)
 
 ### Usage
+
+New note:
+![](icons/new.png)
+
+Edit saved note:
+![](icons/edit.png)  
+
+Save note:
+![](icons/save.png)
+
 Demo
+![](demo/Note-taker.gif)
 
 ### License
 
