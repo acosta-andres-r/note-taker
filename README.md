@@ -23,12 +23,15 @@ This app is completely deployed using Heroku: [Deployed Link](https://stark-moun
 ### Usage
 
 New note:
+
 ![](icons/new.png)
 
 Edit saved note:
+
 ![](icons/edit.png)  
 
 Save note:
+
 ![](icons/save.png)
 
 Demo
