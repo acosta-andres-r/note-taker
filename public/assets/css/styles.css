@@ -8,6 +8,10 @@ html, body {
   display: none;
 }
 
+.edit-note {
+  display: none;
+}
+
 .icons i {
   margin-left: 15px;
   margin-right: 15px;
@@ -31,6 +35,7 @@ html, body {
 .note-title {
   height: 50px;
   margin-top: 13px;
+  padding-bottom: 5px;
   font-size: 3rem;
 }
 
