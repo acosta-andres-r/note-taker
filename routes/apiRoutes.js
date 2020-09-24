@@ -41,12 +41,19 @@ module.exports = function (app) {
 
     app.post("/api/notes", async function (req, res) {
         const newNote = req.body;
+
         // Read data and return parsed object
         let databaseArray = await readDBjson();
-        // Find id to attach to new note
-        newNote.id = databaseArray.length + 1;
-        // New note added to db
-        databaseArray.push(newNote);
+
+        if (newNote.id === "0") {
+            // Find id to attach to new note
+            newNote.id = databaseArray.length + 1;
+            // New note added to db
+            databaseArray.push(newNote);
+        } else {
+            databaseArray[(newNote.id - 1)] = newNote
+        }
+
         // Write a new db.json
         await writeDBjson(databaseArray);
         // response with JSON object of new note
@@ -56,7 +63,7 @@ module.exports = function (app) {
     // API DELETE Requests
     // ---------------------------------------------------------------------------
     app.delete("/api/notes/:id", async function (req, res) {
-        
+
         // Chosen index element (if id is zero, true if statement in index.js will skip )
         var chosen = req.params.id - 1;
         // Read data and return parsed object
