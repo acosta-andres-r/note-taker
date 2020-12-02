@@ -2,7 +2,7 @@
 
 <div align="center"> 
 
-![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?) ![Language count](https://img.shields.io/github/languages/count/acosta-andres-r/note-taker) ![Top Language](https://img.shields.io/github/languages/top/acosta-andres-r/note-taker)
+![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?) ![Language count](https://img.shields.io/github/languages/count/acosta-andres-r/note-taker)
 </div>
   
 ### Description
